@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Burble | The Sensory Regulation App for Autistic Learners — Home, School &amp; Therapy</title>
+<meta name="description" content="Burble turns everyday phones, tablets, and TVs into calm, sensory-safe environments. No hardware. No setup. No new routines to learn. Now on the App Store and Google Play.">
+<meta name="theme-color" content="#05060a">
+<link rel="icon" href="assets/mark.svg">
+<script>
+  // Apply the saved theme before first paint (no flash). Default: dark.
+  (function(){
+    var t='dark';
+    try{ var s=localStorage.getItem('burble-theme'); if(s==='light'||s==='dark') t=s; }catch(e){}
+    document.documentElement.setAttribute('data-theme',t);
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ================= THEME TOKENS ================= */
+:root,
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#05060a;
+  --bg-rgb:5,6,10;
+  --ink-rgb:255,255,255;           /* used for hairlines, panels, glass */
+  --panel:rgba(var(--ink-rgb),.025);
+  --panel-2:rgba(var(--ink-rgb),.045);
+  --line:rgba(var(--ink-rgb),.08);
+  --line-2:rgba(var(--ink-rgb),.14);
+  --rail:rgba(var(--ink-rgb),.035);
+  --text:#f3f5f7;
+  --muted:#9aa1ad;
+  --dim:#6d7480;
+  --head-a:#ffffff;
+  --head-b:rgba(255,255,255,.55);
+  --accent-ink:#7fe6d8;            /* serif accent words */
+  --teal-ink:#22c5b1;              /* small labels */
+  --violet-ink:#b79cff;
+  --gold-ink:#d6a24b;
+  --teal-glow:rgba(34,197,177,.55);
+  --violet-glow:rgba(123,75,224,.5);
+  --sky-violet:rgba(123,75,224,.18);
+  --sky-teal:rgba(34,197,177,.08);
+  --arc-line:rgba(155,255,240,.9);
+  --flare-core:rgba(170,255,240,.95);
+  --card-top:rgba(255,255,255,.04);
+  --card-bot:rgba(255,255,255,.01);
+  --card-edge:rgba(255,255,255,.14);
+  --nav-bg:rgba(5,6,10,.72);
+  --drawer-bg:rgba(5,6,10,.97);
+  --shadow:0 40px 120px -20px rgba(0,0,0,.9);
+  --shadow-sm:0 30px 80px -30px rgba(0,0,0,.8);
+  --logo-filter:grayscale(1) brightness(0) invert(1);
+  --logo-white-filter:grayscale(1) invert(1) contrast(1.6);
+  --logo-blend:screen;
+  --particle-alpha:1;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f6f7f9;
+  --bg-rgb:246,247,249;
+  --ink-rgb:12,18,28;
+  --panel:rgba(255,255,255,.7);
+  --panel-2:rgba(255,255,255,.9);
+  --line:rgba(var(--ink-rgb),.09);
+  --line-2:rgba(var(--ink-rgb),.15);
+  --rail:rgba(var(--ink-rgb),.045);
+  --text:#0b0e14;
+  --muted:#4d5664;
+  --dim:#6b7380;
+  --head-a:#0b0e14;
+  --head-b:rgba(11,14,20,.68);
+  --accent-ink:#0e9e8c;
+  --teal-ink:#0b8a7b;
+  --violet-ink:#6a3fd0;
+  --gold-ink:#9a6b17;
+  --teal-glow:rgba(34,197,177,.35);
+  --violet-glow:rgba(123,75,224,.22);
+  --sky-violet:rgba(123,75,224,.10);
+  --sky-teal:rgba(34,197,177,.10);
+  --arc-line:rgba(34,197,177,.9);
+  --flare-core:rgba(120,235,220,.9);
+  --card-top:rgba(255,255,255,.95);
+  --card-bot:rgba(255,255,255,.6);
+  --card-edge:rgba(255,255,255,1);
+  --nav-bg:rgba(246,247,249,.78);
+  --drawer-bg:rgba(246,247,249,.98);
+  --shadow:0 40px 100px -30px rgba(20,30,50,.35);
+  --shadow-sm:0 24px 60px -30px rgba(20,30,50,.3);
+  --logo-filter:grayscale(1) brightness(0);
+  --logo-white-filter:grayscale(1) contrast(1.4);
+  --logo-blend:multiply;
+  --particle-alpha:.7;
+}
+/* Fixed palette (same in both themes) */
+:root{--teal:#22c5b1;--violet:#7b4be0;--gold:#d6a24b;--radius:16px;--max:1160px}
+
+/* Surfaces that always sit on imagery/video stay dark in both themes */
+.on-dark{--text:#f3f5f7;--muted:#c3c9d2;--dim:#9aa1ad;--line:rgba(255,255,255,.1);--line-2:rgba(255,255,255,.16);--teal-ink:#22c5b1;--gold-ink:#d6a24b;--head-a:#fff;--head-b:rgba(255,255,255,.7);color:var(--text)}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font-family:Urbanist,system-ui,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.serif{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;letter-spacing:0}
+.accent{color:var(--accent-ink)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+@media (max-width:600px){.wrap{padding:0 16px}}
+
+/* theme-aware logo swap */
+.logo-light{display:none}
+:root[data-theme="light"] .logo-dark{display:none}
+:root[data-theme="light"] .logo-light{display:block}
+
+/* page-wide vertical rails, à la Reflect */
+.rails{position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(to right,var(--rail) 1px,transparent 1px);
+  background-size:calc(var(--max)/6) 100%;background-position:center top;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 15%,#000 70%,transparent);
+          mask-image:linear-gradient(to bottom,transparent,#000 15%,#000 70%,transparent)}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.scrolled{background:var(--nav-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.brand img{height:24px;width:auto}
+.links{display:flex;gap:2px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--panel)}
+.links a{font-size:14px;color:var(--muted);padding:6px 14px;border-radius:999px;transition:color .2s,background .2s;white-space:nowrap}
+.links a:hover{color:var(--text);background:var(--panel-2)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.menu-btn{display:none;background:none;border:0;color:var(--text);width:40px;height:40px;cursor:pointer}
+.theme-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--line-2);background:var(--panel);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background .2s,border-color .2s}
+.theme-btn:hover{background:var(--panel-2)}
+.theme-btn svg{width:17px;height:17px}
+[data-theme-toggle] .sun{display:none}
+:root[data-theme="light"] [data-theme-toggle] .sun{display:block}
+:root[data-theme="light"] [data-theme-toggle] .moon{display:none}
+@media (max-width:1060px){
+  .links,.nav-cta .ghost-link{display:none}
+  .menu-btn{display:grid;place-items:center}
+}
+.drawer{display:none;position:fixed;inset:68px 0 0;background:var(--drawer-bg);backdrop-filter:blur(10px);z-index:49;padding:24px 16px;overflow:auto}
+.drawer.open{display:block}
+.drawer a{display:block;font-size:22px;padding:14px 4px;border-bottom:1px solid var(--line);color:var(--text)}
+.drawer .stores{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px}
+.drawer .stores a.store{display:inline-flex;border:1px solid transparent;padding:10px 18px 10px 14px;font-size:inherit}
+.drawer .stores a.store.ghost{border-color:var(--line)}
+
+/* ---------- BUTTONS ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 15px/1 Urbanist,sans-serif;padding:12px 18px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:transform .2s,box-shadow .25s,background .2s,border-color .2s;white-space:nowrap}
+.btn-primary{color:#03130f;background:linear-gradient(180deg,#43dcc8,var(--teal));border-color:rgba(255,255,255,.25);box-shadow:0 0 0 1px rgba(34,197,177,.35),0 8px 30px -8px var(--teal-glow),inset 0 1px 0 rgba(255,255,255,.45)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(34,197,177,.5),0 12px 40px -8px var(--teal-glow),inset 0 1px 0 rgba(255,255,255,.45)}
+.btn-ghost{color:var(--text);background:var(--panel);border-color:var(--line-2)}
+.btn-ghost:hover{background:var(--panel-2);border-color:rgba(var(--ink-rgb),.24)}
+.btn-sm{padding:9px 14px;font-size:14px;border-radius:9px}
+.ghost-link{font-size:14px;color:var(--muted)}
+.ghost-link:hover{color:var(--text)}
+.arrow{transition:transform .2s}
+.btn:hover .arrow,.link-arrow:hover .arrow{transform:translateX(3px)}
+
+/* store buttons */
+.stores{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.store{display:inline-flex;align-items:center;gap:11px;padding:10px 18px 10px 14px;border-radius:12px;line-height:1.1;text-align:left;transition:transform .2s,box-shadow .25s,background .2s,border-color .2s}
+.store svg{width:24px;height:24px;flex:none}
+.store small{display:block;font-size:11px;font-weight:500;opacity:.8;letter-spacing:.01em}
+.store b{display:block;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.store.primary{color:#03130f;background:linear-gradient(180deg,#43dcc8,var(--teal));border:1px solid rgba(255,255,255,.25);box-shadow:0 0 0 1px rgba(34,197,177,.35),0 8px 30px -8px var(--teal-glow),inset 0 1px 0 rgba(255,255,255,.45)}
+.store.ghost{color:var(--text);background:var(--panel);border:1px solid var(--line-2)}
+.store:hover{transform:translateY(-1px)}
+.store.ghost:hover{background:var(--panel-2)}
+.stores.left{justify-content:flex-start}
+.stores.stack{flex-direction:column}
+.stores.stack .store{justify-content:center}
+
+/* ---------- TYPE ---------- */
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--muted);padding:6px 12px 6px 10px;border-radius:999px;border:1px solid var(--line-2);background:linear-gradient(180deg,var(--card-top),var(--card-bot));box-shadow:inset 0 1px 0 rgba(var(--ink-rgb),.05)}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal)}
+h1,h2,h3{font-weight:500;letter-spacing:-.025em;line-height:1.14}
+h1{font-size:clamp(40px,6.6vw,76px)}
+h2{font-size:clamp(34px,4.8vw,56px)}
+h3{font-size:19px;letter-spacing:-.01em;line-height:1.3;font-weight:600}
+.grad{background:linear-gradient(180deg,var(--head-a) 30%,var(--head-b));-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.14em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.lead{font-size:clamp(17px,1.6vw,19px);color:var(--muted);max-width:620px}
+.center{text-align:center}
+.center .lead{margin-left:auto;margin-right:auto}
+.eyebrow-row{margin-bottom:22px}
+.section{position:relative;padding:140px 0}
+@media (max-width:700px){.section{padding:96px 0}}
+.section-head{position:relative;z-index:2;margin-bottom:64px}
+.section-head h2{margin-bottom:18px}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-ink);margin-bottom:14px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:150px 0 0;overflow:hidden}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{max-width:960px;margin:22px auto 22px}
+.hero .lead{max-width:640px}
+.hero .stores{margin-top:34px}
+.hero-note{margin-top:18px;font-size:14px;color:var(--dim)}
+.hero-note a{color:var(--muted);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-2)}
+.hero-note a:hover{color:var(--text)}
+.hero-sky{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(60% 50% at 50% 0%,var(--sky-violet),transparent 70%),radial-gradient(40% 40% at 15% 20%,var(--sky-teal),transparent 70%)}
+.particles{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:var(--particle-alpha)}
+
+/* horizon glow */
+.horizon{position:relative;height:300px;margin-top:40px;z-index:1}
+.horizon .arc{position:absolute;left:50%;top:120px;width:1400px;height:1400px;transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,var(--bg) 96%,transparent 100%);
+  box-shadow:0 -2px 0 0 var(--arc-line),0 -10px 40px 2px var(--teal-glow),0 -40px 140px 20px var(--violet-glow),inset 0 30px 80px -30px var(--teal-glow)}
+.horizon .flare{position:absolute;left:50%;top:104px;width:min(1100px,96vw);height:34px;transform:translateX(-50%);
+  background:radial-gradient(50% 50% at 50% 50%,var(--flare-core),rgba(34,197,177,.45) 30%,rgba(123,75,224,.2) 60%,transparent 75%);filter:blur(10px)}
+.horizon .bloom{position:absolute;left:50%;top:-40px;width:700px;height:300px;transform:translateX(-50%);background:radial-gradient(50% 50% at 50% 80%,var(--violet-glow),transparent 70%);filter:blur(20px)}
+
+/* product window (always dark: it frames video) */
+.window-wrap{position:relative;z-index:3;margin-top:-140px;padding:0 24px}
+.window{max-width:1040px;margin:0 auto;border-radius:18px;padding:8px;background:linear-gradient(180deg,rgba(var(--ink-rgb),.12),rgba(var(--ink-rgb),.03));border:1px solid var(--line-2);box-shadow:var(--shadow),0 0 80px -20px var(--teal-glow)}
+.window-inner{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9;border:1px solid rgba(255,255,255,.06)}
+.window-inner video{width:100%;height:100%;object-fit:cover;opacity:.9}
+.window-bar{position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent);z-index:2}
+.window-bar i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)}
+.window-bar span{margin-left:auto;font-size:12px;color:rgba(255,255,255,.55);letter-spacing:.02em}
+.window-mark{position:absolute;left:50%;top:50%;width:min(120px,18%);transform:translate(-50%,-50%);opacity:.85;filter:drop-shadow(0 0 30px rgba(34,197,177,.5));z-index:2}
+.chip{font-size:12.5px;padding:7px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--line-2);color:var(--text);display:inline-flex;align-items:center;gap:7px}
+.chip.on{border-color:rgba(34,197,177,.55) !important;box-shadow:0 0 20px -6px var(--teal-glow)}
+.chip.on::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
+@media (max-width:600px){.window-wrap{padding:0 12px;margin-top:-150px}.horizon{height:220px}}
+
+/* trust */
+.trust{padding:56px 0 20px;text-align:center;position:relative;z-index:5;background:var(--bg)}
+.trust p{font-size:14px;color:var(--dim);margin-bottom:22px}
+.logos{display:flex;gap:48px;align-items:center;justify-content:center;flex-wrap:wrap}
+.logos img{height:40px;width:auto;filter:var(--logo-filter);opacity:.6;transition:opacity .2s}
+.logos img:hover{opacity:.95}
+.logos .on-white{filter:var(--logo-white-filter);mix-blend-mode:var(--logo-blend);height:54px}
+
+/* ---------- FEATURE GRID ---------- */
+.grid6{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.grid6 .cell{padding:36px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;transition:background .3s}
+.grid6 .cell:hover{background:var(--panel)}
+.icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line-2);background:linear-gradient(180deg,var(--card-top),var(--card-bot));margin-bottom:22px;color:var(--teal-ink)}
+.icon svg{width:19px;height:19px}
+.cell h3{margin-bottom:6px}
+.cell p{color:var(--muted);font-size:15.5px}
+@media (max-width:900px){.grid6{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.grid6{grid-template-columns:1fr}.grid6 .cell{padding:28px 22px}}
+
+/* ---------- STORY ---------- */
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center;position:relative;z-index:2}
+.split h2{margin:22px 0 22px}
+.prose p{color:var(--muted);margin-bottom:16px}
+.prose p strong{color:var(--text);font-weight:600}
+.media-card{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line-2);box-shadow:var(--shadow-sm),0 0 60px -30px var(--violet-glow)}
+.media-card img{width:100%;height:100%;object-fit:cover}
+.media-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(5,6,10,.75))}
+.media-cap{position:absolute;left:20px;bottom:18px;z-index:2;font-size:14px;color:#dfe5ea}
+.founders{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.founder{padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.founder .role{font-size:12.5px;color:var(--teal-ink);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.founder h3{margin:6px 0 8px}
+.founder p{font-size:15px;color:var(--muted)}
+.audience{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:72px;position:relative;z-index:2}
+.card{position:relative;padding:32px;border-radius:var(--radius);border:1px solid var(--line);background:linear-gradient(180deg,var(--card-top),var(--card-bot));overflow:hidden}
+.card h3{margin-bottom:10px;font-size:22px}
+.card p{color:var(--muted)}
+@media (max-width:900px){.split{grid-template-columns:1fr;gap:44px}.audience{grid-template-columns:1fr}}
+@media (max-width:520px){.founders{grid-template-columns:1fr}}
+
+/* ---------- HOW (beam) ---------- */
+.beam-sec{overflow:hidden}
+.beam{position:absolute;left:50%;top:0;width:min(900px,100vw);height:520px;transform:translateX(-50%);pointer-events:none;z-index:0;
+  background:conic-gradient(from 180deg at 50% 0%,transparent 155deg,rgba(34,197,177,.3) 172deg,rgba(150,255,240,.5) 180deg,rgba(34,197,177,.3) 188deg,transparent 205deg);
+  -webkit-mask-image:linear-gradient(#000,transparent 85%);mask-image:linear-gradient(#000,transparent 85%);filter:blur(8px)}
+:root[data-theme="light"] .beam{opacity:.55}
+.beam-src{position:absolute;left:50%;top:-2px;width:260px;height:4px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#7fe6d8,transparent);box-shadow:0 0 30px 6px var(--teal-glow);z-index:1}
+.beam-sec .section-head{padding-top:30px}
+.how{display:grid;grid-template-columns:1fr 320px 1fr;gap:28px;align-items:center;position:relative;z-index:2}
+.steps{display:flex;flex-direction:column;gap:16px}
+.step{padding:26px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);position:relative}
+.step .n{font-size:13px;font-weight:600;color:var(--teal-ink);letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.step .n::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(34,197,177,.4),transparent)}
+.step h3{margin-bottom:8px}
+.step p{font-size:15.5px;color:var(--muted)}
+.step.hl{background:linear-gradient(180deg,rgba(34,197,177,.08),transparent);border-color:rgba(34,197,177,.3)}
+.step .stores{margin-top:16px}
+.step .store{padding:8px 14px 8px 11px}
+.step .store b{font-size:15px}
+.step .store svg{width:20px;height:20px}
+.phone{position:relative;border-radius:44px;padding:10px;background:linear-gradient(180deg,#2a2d33,#0d0f13);border:1px solid var(--line-2);box-shadow:var(--shadow),0 0 90px -20px var(--teal-glow)}
+.phone img{border-radius:36px;width:100%}
+@media (max-width:980px){.how{grid-template-columns:1fr}.phone{max-width:300px;margin:0 auto;order:-1}}
+
+/* ---------- AUDIENCE TIERS ---------- */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;position:relative;z-index:2}
+.tier{display:flex;flex-direction:column;padding:32px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--card-top),var(--card-bot));position:relative;overflow:hidden}
+.tier.feature{border-color:rgba(34,197,177,.45);background:linear-gradient(180deg,rgba(34,197,177,.1),var(--card-bot) 60%);box-shadow:0 0 80px -30px var(--teal-glow)}
+.tier.feature::before{content:"";position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--teal),transparent)}
+.tier .who{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-ink)}
+.tier h3{font-size:24px;margin:12px 0 12px;line-height:1.2;letter-spacing:-.02em;font-weight:500}
+.tier .desc{color:var(--muted);font-size:15.5px;margin-bottom:28px}
+.tier .model{margin-top:auto;padding-top:22px;border-top:1px solid var(--line)}
+.tier .model small{display:block;font-size:12.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.tier .model strong{font-weight:500;font-size:17px}
+.tier .btn,.tier .stores{margin-top:22px}
+.tier .btn{justify-content:center}
+.tier .store{flex:1;justify-content:center;padding:9px 12px}
+.tier .store b{font-size:14.5px}
+.tier .store svg{width:19px;height:19px}
+.tiers-cta{text-align:center;margin-top:44px;position:relative;z-index:2}
+@media (max-width:900px){.tiers{grid-template-columns:1fr}}
+
+/* ---------- STATS / MISMATCH ---------- */
+.mismatch{display:grid;grid-template-columns:.9fr 1.1fr;gap:72px;position:relative;z-index:2}
+.mismatch h2{margin:22px 0 0}
+.stats{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line);margin:8px 0 36px}
+.stat{padding:28px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat b{display:block;font-size:clamp(34px,4vw,48px);font-weight:500;letter-spacing:-.03em;line-height:1;margin-bottom:10px}
+.stat span{font-size:14.5px;color:var(--muted);display:block;line-height:1.45}
+.stat.wide{grid-column:span 2}
+.callout{margin-top:28px;padding:24px 26px;border-left:2px solid var(--teal);background:linear-gradient(90deg,rgba(34,197,177,.1),transparent);border-radius:0 12px 12px 0;font-size:20px;line-height:1.45}
+.callout .accent{color:var(--teal-ink)}
+.sources{margin-top:22px;font-size:13px;color:var(--dim)}
+@media (max-width:900px){.mismatch{grid-template-columns:1fr;gap:28px}}
+@media (max-width:480px){.stats{grid-template-columns:1fr}.stat.wide{grid-column:auto}}
+
+/* ---------- SCIENCE BENTO ---------- */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;position:relative;z-index:2}
+.b{position:relative;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--card-top),var(--card-bot));overflow:hidden;padding:32px}
+.b h3{font-size:22px;margin-bottom:12px;font-weight:500;letter-spacing:-.015em}
+.b p{color:var(--muted);font-size:15.5px;margin-bottom:12px}
+.b p:last-child{margin-bottom:0}
+.b-1{grid-column:span 6;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:0;background:#07080c;border-color:rgba(255,255,255,.08)}
+.b-1 .txt{padding:44px}
+.b-1 .img{height:100%;min-height:340px;position:relative}
+.b-1 .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 35%);mask-image:linear-gradient(90deg,transparent,#000 35%)}
+.b-1 h3{font-size:30px}
+.b-2,.b-3{grid-column:span 3}
+.b-4,.b-5{grid-column:span 3;padding:0;min-height:460px;display:flex;flex-direction:column;justify-content:flex-end;background:#07080c;border-color:rgba(255,255,255,.08)}
+.b-4 .bg,.b-5 .bg{position:absolute;inset:0}
+.b-4 .bg img,.b-5 .bg img{width:100%;height:100%;object-fit:cover}
+.b-4 .bg::after,.b-5 .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,10,.15),rgba(5,6,10,.7) 45%,rgba(5,6,10,.96))}
+.b-4 .txt,.b-5 .txt{position:relative;padding:32px}
+.b-4 .tag{color:var(--gold)}
+.moat{grid-column:span 6;text-align:center;padding:56px 32px;background:radial-gradient(60% 120% at 50% 100%,rgba(34,197,177,.14),transparent 70%),linear-gradient(180deg,var(--card-top),var(--card-bot))}
+.moat p{font-size:clamp(22px,2.6vw,32px);color:var(--text);line-height:1.3;max-width:860px;margin:0 auto;letter-spacing:-.015em}
+.patent-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media (max-width:900px){.bento>*{grid-column:span 6 !important}.b-1{grid-template-columns:1fr;gap:0}.b-1 .img{min-height:260px;order:-1}.b-1 .img img{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}.b-1 .txt{padding:8px 28px 32px}}
+@media (max-width:520px){.b{padding:24px}}
+
+/* ---------- DEMO ---------- */
+.demo-frame{position:relative;z-index:2;max-width:960px;margin:0 auto;border-radius:20px;padding:8px;border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(var(--ink-rgb),.1),rgba(var(--ink-rgb),.02));box-shadow:0 0 120px -40px var(--violet-glow),var(--shadow-sm)}
+.demo-frame .player{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000 center/cover no-repeat;cursor:pointer}
+.demo-frame .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:84px;height:84px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .25s,background .25s;box-shadow:0 0 50px -10px rgba(34,197,177,.55)}
+.player:hover .play{transform:translate(-50%,-50%) scale(1.06);background:rgba(34,197,177,.3)}
+.play svg{width:28px;height:28px;margin-left:4px}
+.demo-glow{position:absolute;left:50%;bottom:-60px;width:80%;height:160px;transform:translateX(-50%);background:radial-gradient(50% 50% at 50% 50%,var(--violet-glow),transparent 70%);filter:blur(30px);z-index:1}
+
+/* ---------- TESTIMONIALS ---------- */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);max-width:860px;margin:0 auto 56px;position:relative;z-index:2;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--panel)}
+.kpi{padding:28px 20px;text-align:center;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi b{display:block;font-size:clamp(34px,4.4vw,52px);font-weight:500;letter-spacing:-.03em;line-height:1}
+.kpi span{display:block;margin-top:8px;font-size:15px}
+.kpi small{display:block;color:var(--dim);font-size:13px}
+.quotes{columns:2;column-gap:16px;position:relative;z-index:2}
+.quote{break-inside:avoid;margin-bottom:16px;padding:28px;border-radius:var(--radius);border:1px solid var(--line);background:linear-gradient(180deg,var(--card-top),var(--card-bot))}
+.quote p{font-size:18px;line-height:1.55;color:var(--text);margin-bottom:20px}
+.who-row{display:flex;align-items:center;gap:12px}
+.who-row img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--line-2)}
+.who-row b{font-weight:600;font-size:15px}
+.who-row small{display:block;color:var(--dim);font-size:13px}
+@media (max-width:760px){.quotes{columns:1}.kpis{grid-template-columns:1fr}.kpi{border-right:0;border-bottom:1px solid var(--line)}.kpi:last-child{border-bottom:0}}
+
+/* ---------- BLOG ---------- */
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;position:relative;z-index:2}
+.post{display:flex;flex-direction:column;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel);overflow:hidden;transition:border-color .25s,transform .25s}
+.post:hover{border-color:rgba(34,197,177,.45);transform:translateY(-3px)}
+.post .th{aspect-ratio:16/10;overflow:hidden}
+.post .th img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.post:hover .th img{transform:scale(1.04)}
+.post .body{padding:22px 22px 26px;display:flex;flex-direction:column;flex:1}
+.post h3{font-size:18.5px;font-weight:500;margin-bottom:16px}
+.link-arrow{margin-top:auto;font-size:14px;color:var(--teal-ink);display:inline-flex;gap:6px;align-items:center}
+.blog-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+@media (max-width:900px){.posts{grid-template-columns:1fr}}
+
+/* ---------- FINAL CTA ---------- */
+.final{position:relative;padding:150px 0 170px;text-align:center;overflow:hidden}
+.final h2{font-size:clamp(40px,6vw,72px);margin:22px 0 18px}
+.final .horizon{position:absolute;left:0;right:0;bottom:-120px;height:300px;margin:0}
+.final .horizon .arc{top:140px}
+.final .horizon .flare{top:124px}
+.final .wrap{position:relative;z-index:3}
+.final .lead{margin:0 auto}
+.final .stores{margin-top:34px}
+.contact-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--line);padding:64px 0 40px;position:relative;z-index:3;background:var(--bg)}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+.foot .brand img{height:26px;margin-bottom:16px}
+.foot p{color:var(--muted);font-size:15px;max-width:300px}
+.foot h4{font-size:13px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px}
+.foot ul{list-style:none}
+.foot li{margin-bottom:10px}
+.foot li a{color:var(--muted);font-size:15px;transition:color .2s}
+.foot li a:hover{color:var(--text)}
+.copy{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-size:13.5px;color:var(--dim);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+@media (max-width:860px){.foot{grid-template-columns:1fr 1fr}.foot>div:first-child{grid-column:span 2}}
+
+/* ---------- REVEAL ---------- */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+@media (max-width:600px){.brand img{height:20px}.nav-cta .btn-sm{padding:8px 11px;font-size:13px}.theme-btn{width:34px;height:34px}}
+@media (max-width:380px){.nav-cta .btn-sm{display:none}}
+</style>
+</head>
+<body>
+
+<!-- Reusable store icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.04 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.3-3.52zM14.2 6.13c.6-.73 1.01-1.75.9-2.76-.87.04-1.92.58-2.54 1.31-.56.64-1.05 1.68-.92 2.67.97.08 1.96-.49 2.56-1.22z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="#00d7fe" d="M3.6 2.3 13.4 12l-9.8 9.7c-.35-.18-.6-.56-.6-1.03V3.33c0-.47.25-.85.6-1.03z"/><path fill="#ffce00" d="m16.7 15.3-3.3-3.3 3.3-3.3 3.7 2.1c1.06.6 1.06 1.8 0 2.4z"/><path fill="#00f076" d="M3.6 2.3c.22-.11.48-.13.76-.03l12.34 6.43L13.4 12z"/><path fill="#ff3a44" d="M13.4 12l3.3 3.3-12.34 6.43c-.28.1-.54.08-.76-.03z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+</svg>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a href="#top" class="brand" aria-label="Burble Neuro home">
+      <img class="logo-dark" src="assets/wordmark.svg" alt="burble neuro">
+      <img class="logo-light" src="assets/wordmark-dark.svg" alt="burble neuro">
+    </a>
+    <nav class="links" aria-label="Primary">
+      <a href="#story">Our Story</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#science">The Science</a>
+      <a href="#families-and-institutions">Families, Schools &amp; Clinics</a>
+      <a href="#demo">Demo</a>
+      <a href="https://www.burbleneuro.com/blog">Blog</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="ghost-link" href="#contact">Contact</a>
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch to light mode" title="Switch theme">
+        <svg class="moon"><use href="#i-moon"/></svg><svg class="sun"><use href="#i-sun"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="#download">Get the app</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="drawer" id="drawer">
+  <a href="#story">Our Story</a>
+  <a href="#how-it-works">How It Works</a>
+  <a href="#science">The Science</a>
+  <a href="#families-and-institutions">Families, Schools &amp; Clinics</a>
+  <a href="#demo">Demo</a>
+  <a href="https://www.burbleneuro.com/blog">Blog</a>
+  <a href="#contact">Contact</a>
+  <div class="stores stack">
+    <a class="store primary" data-store="ios" href="#download"><svg><use href="#i-apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a>
+    <a class="store ghost" data-store="android" href="#download"><svg><use href="#i-play"/></svg><span><small>Get it on</small><b>Google Play</b></span></a>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-sky"></div>
+  <div class="rails"></div>
+  <canvas class="particles" id="particles"></canvas>
+  <div class="wrap center">
+    <span class="pill reveal"><span class="dot"></span>Now live on the App Store &amp; Google Play</span>
+    <h1 class="reveal"><span class="grad">Turn the screens you already own into the</span> <span class="serif accent">calm</span> <span class="grad">your child actually needs.</span></h1>
+    <p class="lead reveal">Burble turns everyday phones, tablets, and TVs into calm, sensory-safe environments. No hardware. No setup. No new routines to learn. Just press play and let the environment do the work.</p>
+    <div class="stores reveal">
+      <a class="store primary" data-store="ios" href="#download"><svg><use href="#i-apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a>
+      <a class="store ghost" data-store="android" href="#download"><svg><use href="#i-play"/></svg><span><small>Get it on</small><b>Google Play</b></span></a>
+    </div>
+    <p class="hero-note reveal">For home, school &amp; therapy · <a href="#families-and-institutions">Learn about who we support</a></p>
+  </div>
+  <div class="horizon"><div class="bloom"></div><div class="arc"></div><div class="flare"></div></div>
+  <div class="window-wrap reveal">
+    <div class="window">
+      <div class="window-inner">
+        <div class="window-bar"><i></i><i></i><i></i><span>Burble · Now playing</span></div>
+        <video id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true">
+          <source src="assets/hero-mobile.mp4" type="video/mp4" media="(max-width: 767px)">
+          <source src="assets/hero-desktop.mp4" type="video/mp4">
+        </video>
+        <script>
+          /* Reduced motion or data saver: show the still frame and skip the download entirely */
+          (function(v){
+            var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var save=navigator.connection&&navigator.connection.saveData;
+            if(reduce||save){v.removeAttribute('autoplay');v.preload='none';v.querySelectorAll('source').forEach(function(s){s.remove()});v.load();v.dataset.still='1'}
+          })(document.getElementById('heroVideo'));
+        </script>
+        <img class="window-mark" src="assets/mark.svg" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="wrap">
+    <p>Active deployments stabilizing nervous systems at scale</p>
+    <div class="logos">
+      <img src="assets/img2.png" alt="LAUSD">
+      <img class="on-white" src="assets/spectrum360.png" alt="Spectrum 360">
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE GRID -->
+<section class="section" style="padding-top:110px">
+  <div class="wrap">
+    <div class="grid6 reveal">
+      <div class="cell">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z"/></svg></div>
+        <h3>Autism-led</h3>
+        <p>Built from lived experience, not theory, and refined with the autism community.</p>
+      </div>
+      <div class="cell">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h3>Patented MDI™</h3>
+        <p>A granted-patent methodology for how narrative, visuals, and sound support regulation.</p>
+      </div>
+      <div class="cell">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="13" height="10" rx="1.5"/><rect x="15" y="9" width="6" height="11" rx="1.5"/><path d="M7 18h6"/></svg></div>
+        <h3>No hardware needed</h3>
+        <p>Runs on the phones, tablets, and smart TVs your family or classroom already uses.</p>
+      </div>
+      <div class="cell">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/></svg></div>
+        <h3>Home</h3>
+        <p>After school, during errands, before bed, in the car, or in a waiting room.</p>
+      </div>
+      <div class="cell">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-5 9 5-9 5-9-5z"/><path d="M7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5"/></svg></div>
+        <h3>School</h3>
+        <p>Transitions, calming corners, and special education support across the classroom.</p>
+      </div>
+      <div class="cell">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-5 4 10 2-5h6"/></svg></div>
+        <h3>Therapy</h3>
+        <p>Session warm-ups, co-regulation practice, and carry-over between appointments.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR STORY -->
+<section class="section" id="story" style="padding-top:60px">
+  <div class="wrap">
+    <div class="split">
+      <div class="reveal">
+        <span class="pill"><span class="dot"></span>Our Story</span>
+        <h2><span class="grad">Built from lived experience,</span> <span class="serif">not theory.</span></h2>
+        <div class="prose">
+          <p><strong>Your child doesn't need to be fixed.</strong> Their environment needs to work better for their nervous system. That's where Burble began.</p>
+        </div>
+        <div class="founders">
+          <div class="founder">
+            <div class="role">Co-founder</div>
+            <h3>Taylor Cole</h3>
+            <p>Built MDI™ from inside that experience, living with Auditory Processing Disorder, and knowing firsthand what it feels like when the world around you works against your nervous system instead of with it.</p>
+          </div>
+          <div class="founder">
+            <div class="role">Co-founder &amp; CEO</div>
+            <h3>Amelia Soriano</h3>
+            <p>Built the platform to make that insight scalable, so the same regulation support that works in a therapy session can follow a child to the classroom, the car, and home without losing the routine they've already settled into.</p>
+          </div>
+        </div>
+      </div>
+      <div class="media-card reveal" style="aspect-ratio:4/5">
+        <img src="assets/img5.png" alt="Two children sitting on cushions in front of a calm, softly lit projected environment">
+        <div class="media-cap">The environment does the work.</div>
+      </div>
+    </div>
+
+    <div class="audience">
+      <div class="card reveal">
+        <span class="tag">For Families</span>
+        <h3>Calm, wherever your child needs it.</h3>
+        <p>Use Burble anywhere your child needs calm: after school, during errands, before bed, in the car, or in a waiting room. The same regulation experiences can support home, therapy, and classroom routines.</p>
+      </div>
+      <div class="card reveal">
+        <span class="tag" style="color:var(--violet-ink)">For Schools &amp; Clinics</span>
+        <h3>A simple regulation tool on devices you own.</h3>
+        <p>Give classrooms and clinics a simple regulation tool that runs on devices they already own. Use Burble for transitions, calming corners, special education support, and therapy sessions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section beam-sec" id="how-it-works">
+  <div class="beam-src"></div><div class="beam"></div>
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow-row"><span class="pill"><span class="dot"></span>How It Works</span></div>
+      <h2 class="grad">Regulation in three steps.</h2>
+      <p class="lead">That’s the whole setup. That’s the point.</p>
+    </div>
+    <div class="how">
+      <div class="steps">
+        <div class="step reveal">
+          <div class="n">01</div>
+          <h3>Download the app</h3>
+          <p>Burble installs on any phone, tablet, or smart TV your family or classroom already uses. Stream or download experiences for offline regulation on the school bus, in the waiting room, or anywhere Wi‑Fi isn’t.</p>
+          <div class="stores left">
+            <a class="store ghost" data-store="ios" href="#download"><svg><use href="#i-apple"/></svg><span><b>App Store</b></span></a>
+            <a class="store ghost" data-store="android" href="#download"><svg><use href="#i-play"/></svg><span><b>Google Play</b></span></a>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="n">02</div>
+          <h3>Select an experience</h3>
+          <p>For rising overwhelm, a withdrawn or shut-down state, or an everyday transition. Each one is designed to meet your child where they are right now, not where you need them to be.</p>
+        </div>
+      </div>
+      <div class="phone reveal"><img src="assets/phone.png" alt="Burble app screen: choose your story style"></div>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="n">03</div>
+          <h3>Press play</h3>
+          <p>The screen becomes the environment. MDI™ is built to be received, not performed. Slow, predictable, sensory-safe input supports the nervous system directly.</p>
+        </div>
+        <div class="step hl reveal">
+          <div class="n">✦</div>
+          <h3>Nothing required</h3>
+          <p>None of them require anything from your child.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAMILIES / SCHOOLS / CLINICS -->
+<section class="section" id="families-and-institutions">
+  <span id="download" style="position:absolute;top:60px"></span>
+  <div class="rails"></div>
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow-row"><span class="pill"><span class="dot"></span>Families · Schools · Clinics</span></div>
+      <h2 class="grad">Burble is live.</h2>
+      <p class="lead">Download it today on the App Store and Google Play. One regulation routine that follows a child from home to the classroom to the therapy room.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier feature reveal">
+        <span class="who">Families</span>
+        <h3>Portable sensory de-escalation in your pocket</h3>
+        <p class="desc">Post-school decompression, restaurant transitions, or bedtime routines.</p>
+        <div class="model"><small>Pricing model</small><strong>Monthly mobile app subscription</strong></div>
+        <div class="stores">
+          <a class="store primary" data-store="ios" href="#download"><svg><use href="#i-apple"/></svg><span><b>App Store</b></span></a>
+          <a class="store ghost" data-store="android" href="#download"><svg><use href="#i-play"/></svg><span><b>Google Play</b></span></a>
+        </div>
+      </div>
+      <div class="tier reveal">
+        <span class="who">Schools</span>
+        <h3>District-wide Tier-1 regulation infrastructure</h3>
+        <p class="desc">Classroom-wide transitions, behavioral referral reduction, and calming sensory corners.</p>
+        <div class="model"><small>Pricing model</small><strong>Annual site license (enterprise deployment)</strong></div>
+        <a class="btn btn-ghost" href="https://links.burbleneuro.com/widget/bookings/burblenuero-amelia-soriano">Schedule a call <span class="arrow">→</span></a>
+      </div>
+      <div class="tier reveal">
+        <span class="who">Clinics</span>
+        <h3>Session regulation support for your clients</h3>
+        <p class="desc">Session warm-ups and transitions, co-regulation practice, and structured carry-over between appointments.</p>
+        <div class="model"><small>Pricing model</small><strong>Schedule a call to discuss</strong></div>
+        <a class="btn btn-ghost" href="https://links.burbleneuro.com/widget/bookings/burblenuero-amelia-soriano">Schedule a call <span class="arrow">→</span></a>
+      </div>
+    </div>
+    <div class="tiers-cta reveal">
+      <a class="btn btn-ghost" href="https://links.burbleneuro.com/widget/bookings/burblenuero-amelia-soriano">Schedule a call to learn more <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- THE SCALE OF THE MISMATCH -->
+<section class="section">
+  <div class="wrap">
+    <div class="mismatch">
+      <div class="reveal">
+        <span class="pill"><span class="dot" style="background:var(--gold);box-shadow:0 0 10px var(--gold)"></span>The scale of the mismatch</span>
+        <h2><span class="grad">The systems children depend on aren't built for their</span> <span class="serif">nervous systems.</span></h2>
+        <div class="callout">Potential isn't the problem. The environment is. <span class="accent">We built Burble to fix the environment.</span></div>
+      </div>
+      <div class="reveal">
+        <div class="stats">
+          <div class="stat"><b>1 in 31</b><span>children in the U.S. is autistic.</span></div>
+          <div class="stat"><b>1 in 5</b><span>has a diagnosable mental health condition, and fewer than half receive any treatment.</span></div>
+          <div class="stat wide"><b>14.7M</b><span>students are chronically absent each year — autistic students at nearly twice the neurotypical rate.</span></div>
+        </div>
+        <div class="prose">
+          <p>The most common reason children are referred for school disciplinary action isn't academic failure. It's behavioral disruption — which is, almost always, a regulation failure happening upstream.</p>
+          <p>No infrastructure has existed to address regulation across every environment a child lives in. <strong>Until now.</strong></p>
+          <p>Burble starts where the need is most acute: autistic learners, where the mismatch between nervous system and environment is most visible. Designed for the most complex regulation needs. Built to serve every neurotype.</p>
+        </div>
+        <p class="sources">Sources: CDC MMWR 2025, U.S. Dept. of Education, NIMH, Scientific Reports/Nature 2022.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE SCIENCE -->
+<section class="section" id="science">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow-row"><span class="pill"><span class="dot"></span>The Science</span></div>
+      <h2><span class="grad">Development of</span> <span class="serif">MDI™</span></h2>
+      <p class="lead">Story is not decoration. It is functional architecture.</p>
+    </div>
+    <div class="bento">
+      <div class="b b-1 on-dark reveal">
+        <div class="txt">
+          <span class="tag">Minimally Defined Immersion</span>
+          <h3>Every rule exists for a regulation reason.</h3>
+          <p>Minimally Defined Immersion (MDI™). A granted-patent methodology governs how narrative, abstract visuals, and sound interact to support nervous system regulation.</p>
+          <p>MDI™ is a human-built rules architecture with more than a hundred pages of interdependent sensory design rules, refined with the autism community.</p>
+        </div>
+        <div class="img"><img src="assets/img3.png" alt="Soft layered sound waves in teal, gold and violet"></div>
+      </div>
+      <div class="b b-2 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></div>
+        <h3>The content platform</h3>
+        <p>Burble's authoring system coordinates narrative, visuals, and sound through embedded MDI™ rules — allowing the story library to scale without compromising the methodology.</p>
+        <p>Every experience passes a human review gate before publication. Technology makes MDI™ scalable. It does not replace the design intelligence behind it.</p>
+      </div>
+      <div class="b b-3 reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+        <h3>A protected full stack</h3>
+        <p>One granted patent and three additional filings protect the methodology, adaptive regulation engine, multisensory encoding system, and cross-environment continuity layer.</p>
+        <p>A competitor can build an engine. They cannot replicate the architecture or how it was built to serve.</p>
+        <div class="patent-row"><span class="chip on">1 granted patent</span><span class="chip">3 additional filings</span></div>
+      </div>
+      <div class="b b-4 on-dark reveal">
+        <div class="bg"><img src="assets/img4.png" alt=""></div>
+        <div class="txt">
+          <span class="tag">The Problem</span>
+          <h3>Hyper-stimulation</h3>
+          <p>Traditional digital media relies on hyper-frequent visual cuts, high-intensity color ranges, and narrative spikes designed to create dopamine loops.</p>
+          <p>For a neurodivergent or fragile nervous system, this results in profound exhaustion and dysregulation.</p>
+        </div>
+      </div>
+      <div class="b b-5 on-dark reveal">
+        <div class="bg"><img src="assets/img7.jpg" alt=""></div>
+        <div class="txt">
+          <span class="tag">The Solution</span>
+          <h3>Minimally Defined Immersion (MDI™)</h3>
+          <p>Burble works in reverse. By stripping away cognitive tracking, character dialogue, and complex focal shifts, we utilize slow visual pacing and low sensory contrast and ambient sound at frequencies that don't compete for attention.</p>
+          <p>The result is an environment the nervous system can enter without effort and rest inside.</p>
+        </div>
+      </div>
+      <div class="b moat reveal">
+        <p>The moat is the methodology: <span style="color:var(--muted)">sensory design rules, software delivery, and cross-environment continuity working as one protected system.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section class="section" id="demo">
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow-row"><span class="pill"><span class="dot"></span>Demo</span></div>
+      <h2><span class="grad">Experience a</span> <span class="serif">story.</span></h2>
+      <p class="lead">Slow, predictable, sensory-safe. See what your child sees.</p>
+    </div>
+    <div style="position:relative">
+      <div class="demo-glow"></div>
+      <div class="demo-frame reveal">
+        <div class="player" id="player" style="background-image:url('https://i.ytimg.com/vi/4Jb5eOz8gb4/sddefault.jpg')" role="button" tabindex="0" aria-label="Play the Burble demo video">
+          <div class="play"><svg viewBox="0 0 24 24" fill="#fff"><path d="M7 4.5v15l13-7.5z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="rails"></div>
+  <div class="wrap">
+    <div class="section-head center reveal">
+      <div class="eyebrow-row"><span class="pill"><span class="dot"></span>Voices from families and educators</span></div>
+      <h2 class="grad">What families are noticing.</h2>
+    </div>
+    <div class="kpis reveal">
+      <div class="kpi"><b>95%</b><span>Positive feedback</span><small>Parents, clinicians, educators</small></div>
+      <div class="kpi"><b>100+</b><span>Prototype testers</span><small>Home and institutional</small></div>
+      <div class="kpi"><b>1000+</b><span>Families</span><small>Signed up before launch</small></div>
+    </div>
+    <div class="quotes">
+      <figure class="quote reveal">
+        <p>“The Burble experience matched perfectly with my son’s vast imagination. At one point, my son was playing a video game and stopped and asked if he could try Burble again. That is rare in my household!”</p>
+        <figcaption class="who-row"><img src="assets/avatar-tiffany.jpg" alt="" loading="lazy"><div><b>Tiffany P.</b><small>Parent</small></div></figcaption>
+      </figure>
+      <figure class="quote reveal">
+        <p>“Amazing! I enjoyed watching my kids experience it! It was phenomenal to watch their body language as the lights and sounds changed.”</p>
+        <figcaption class="who-row"><img src="assets/avatar-yensley.png" alt="" loading="lazy"><div><b>Yensley B.</b><small>Parent</small></div></figcaption>
+      </figure>
+      <figure class="quote reveal">
+        <p>“The story kept my son’s attention. He really loved it.”</p>
+        <figcaption class="who-row"><img src="assets/avatar-tim.png" alt="" loading="lazy"><div><b>Tim S.</b><small>Parent</small></div></figcaption>
+      </figure>
+      <figure class="quote reveal">
+        <p>“My 12-year-old found it very appealing and the story stuck with him.”</p>
+        <figcaption class="who-row"><img src="assets/avatar-rich.jpg" alt="" loading="lazy"><div><b>Rich E.</b><small>Parent</small></div></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="section" style="padding-top:60px">
+  <div class="wrap">
+    <div class="section-head blog-head reveal">
+      <div>
+        <div class="eyebrow-row"><span class="pill"><span class="dot"></span>From the blog</span></div>
+        <h2 class="grad" style="margin-bottom:14px">The thinking behind the category.</h2>
+        <p class="lead">Burble is building a category that didn’t exist before: regulation infrastructure. Explore the research, clinical foundations, and lived experience behind regulation-first design.</p>
+      </div>
+      <a class="btn btn-ghost" href="https://www.burbleneuro.com/blog">Read more on our blog <span class="arrow">→</span></a>
+    </div>
+    <div class="posts">
+      <a class="post reveal" href="https://www.burbleneuro.com/articles/the-communication-gap-new-research-on-autistic%E2%80%93neurotypical-mismatch">
+        <div class="th"><img src="assets/blog1.jpg" alt="" loading="lazy"></div>
+        <div class="body"><h3>The Communication Gap: New Research on Autistic–Neurotypical Mismatch</h3><span class="link-arrow">Read article <span class="arrow">→</span></span></div>
+      </a>
+      <a class="post reveal" href="https://www.burbleneuro.com/articles/storythinking-how-narrative-builds-creativity-resilience-and-regulated-minds">
+        <div class="th"><img src="assets/blog2.jpg" alt="" loading="lazy"></div>
+        <div class="body"><h3>Storythinking: How Narrative Builds Creativity, Resilience, and Regulated Minds</h3><span class="link-arrow">Read article <span class="arrow">→</span></span></div>
+      </a>
+      <a class="post reveal" href="https://www.burbleneuro.com/articles/how-nonverbal-autistic-children-gain-speech-why-regulation-comes-first">
+        <div class="th"><img src="assets/blog3.jpg" alt="" loading="lazy"></div>
+        <div class="body"><h3>How Nonverbal Autistic Children Gain Speech: Why Regulation Comes First</h3><span class="link-arrow">Read article <span class="arrow">→</span></span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final" id="contact">
+  <div class="rails"></div>
+  <div class="wrap">
+    <span class="pill reveal"><span class="dot"></span>Get started</span>
+    <h2 class="reveal"><span class="grad">Experience a story.</span><br><span class="serif accent">Talk to us.</span></h2>
+    <p class="lead reveal">Building the infrastructure that enables every nervous system to thrive.</p>
+    <div class="stores reveal">
+      <a class="store primary" data-store="ios" href="#download"><svg><use href="#i-apple"/></svg><span><small>Download on the</small><b>App Store</b></span></a>
+      <a class="store ghost" data-store="android" href="#download"><svg><use href="#i-play"/></svg><span><small>Get it on</small><b>Google Play</b></span></a>
+    </div>
+    <div class="contact-row reveal">
+      <a class="btn btn-ghost" href="https://links.burbleneuro.com/widget/bookings/burblenuero-amelia-soriano">Schedule a call <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="mailto:hello@burbleneuro.com">hello@burbleneuro.com</a>
+    </div>
+  </div>
+  <div class="horizon"><div class="bloom"></div><div class="arc"></div><div class="flare"></div></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#top" class="brand" aria-label="Burble Neuro home">
+          <img class="logo-dark" src="assets/wordmark.svg" alt="burble neuro">
+          <img class="logo-light" src="assets/wordmark-dark.svg" alt="burble neuro">
+        </a>
+        <p>Turning the screens you already own into calm, sensory-safe environments for home, school, and therapy.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#science">The Science</a></li>
+          <li><a data-store="ios" href="#download">App Store</a></li>
+          <li><a data-store="android" href="#download">Google Play</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="https://www.burbleneuro.com/who-we-are">Who We Are</a></li>
+          <li><a href="#families-and-institutions">For Schools &amp; Clinics</a></li>
+          <li><a href="https://www.burbleneuro.com/blog">Blog</a></li>
+          <li><a href="https://www.burbleneuro.com/privacypolicy">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/burbleneuro/">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/company/burble-neuro-inc">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/@BurbleNeuro">YouTube</a></li>
+          <li><a href="https://medium.com/burble-creativity">Medium</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>Copyright © 2026 BurbleNeuro Inc. - All Rights Reserved.</span>
+      <button class="btn btn-ghost btn-sm" type="button" data-theme-toggle aria-label="Switch to light mode">
+        <svg class="moon" width="15" height="15"><use href="#i-moon"/></svg><svg class="sun" width="15" height="15"><use href="#i-sun"/></svg><span data-theme-label>Dark mode</span>
+      </button>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ App store links ============
+   Every App Store / Google Play button on the page uses these. */
+const STORE_LINKS = {
+  ios: "https://apps.apple.com/us/app/burble-neuro/id6775283680",
+  android: "https://play.google.com/store/apps/details?id=com.burbleneuro.app"
+};
+
+document.querySelectorAll('[data-store]').forEach(a=>{
+  const url=STORE_LINKS[a.dataset.store];
+  if(url){a.href=url;a.target="_blank";a.rel="noopener"}
+});
+
+/* ============ Theme toggle (remembered per visitor) ============ */
+const root=document.documentElement;
+const metaTheme=document.querySelector('meta[name="theme-color"]');
+function applyTheme(t){
+  root.setAttribute('data-theme',t);
+  metaTheme.setAttribute('content',t==='light'?'#f6f7f9':'#05060a');
+  const next=t==='light'?'dark':'light';
+  document.querySelectorAll('[data-theme-toggle]').forEach(b=>b.setAttribute('aria-label','Switch to '+next+' mode'));
+  document.querySelectorAll('[data-theme-label]').forEach(s=>s.textContent=t==='light'?'Light mode':'Dark mode');
+}
+applyTheme(root.getAttribute('data-theme')||'dark');
+document.querySelectorAll('[data-theme-toggle]').forEach(b=>b.addEventListener('click',()=>{
+  const t=root.getAttribute('data-theme')==='light'?'dark':'light';
+  applyTheme(t);
+  try{localStorage.setItem('burble-theme',t)}catch(e){}
+}));
+
+/* nav state */
+const nav=document.getElementById('nav');
+const onScroll=()=>nav.classList.toggle('scrolled',scrollY>10);
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+/* mobile drawer */
+const btn=document.getElementById('menuBtn'),drawer=document.getElementById('drawer');
+btn.addEventListener('click',()=>{const o=drawer.classList.toggle('open');btn.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':''});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{drawer.classList.remove('open');btn.setAttribute('aria-expanded',false);document.body.style.overflow=''}));
+
+/* reveal on scroll */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(el.closest('.hero')?i*80:0)+'ms';io.observe(el)});
+
+/* hero video: pause while scrolled out of view to save battery and CPU */
+(()=>{
+  const v=document.getElementById('heroVideo');
+  if(!v||v.dataset.still||!('IntersectionObserver' in window))return;
+  new IntersectionObserver(([e])=>{if(e.isIntersecting){const p=v.play();if(p)p.catch(()=>{})}else v.pause()},{threshold:0.1}).observe(v);
+})();
+
+/* demo: load YouTube on click */
+const player=document.getElementById('player');
+const play=()=>{player.innerHTML='<iframe src="https://www.youtube.com/embed/4Jb5eOz8gb4?autoplay=1&rel=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Burble demo"></iframe>';player.style.cursor='default'};
+player.addEventListener('click',play,{once:true});
+player.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();play()}},{once:true});
+
+/* slow bokeh particles in the hero (calm, low-contrast) */
+(()=>{
+  const c=document.getElementById('particles');if(!c)return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const x=c.getContext('2d');let w,h,ps=[];
+  const cols=['34,197,177','123,75,224','214,162,75','183,156,255'];
+  const size=()=>{const r=devicePixelRatio||1;w=c.offsetWidth;h=c.offsetHeight;c.width=w*r;c.height=h*r;x.setTransform(r,0,0,r,0,0)};
+  size();addEventListener('resize',size);
+  const n=Math.min(70,Math.round(innerWidth/18));
+  for(let i=0;i<n;i++)ps.push({x:Math.random()*w,y:Math.random()*h*.8,r:Math.random()*2.4+.6,a:Math.random()*.5+.1,v:Math.random()*.15+.03,c:cols[i%cols.length],p:Math.random()*6.28});
+  const draw=t=>{x.clearRect(0,0,w,h);for(const p of ps){const a=p.a*(.6+.4*Math.sin(t/2400+p.p));x.beginPath();x.fillStyle=`rgba(${p.c},${a})`;x.shadowBlur=12;x.shadowColor=`rgba(${p.c},${a})`;x.arc(p.x,p.y,p.r,0,6.28);x.fill();if(!reduce){p.y-=p.v;if(p.y<-10){p.y=h*.8;p.x=Math.random()*w}}}if(!reduce)requestAnimationFrame(draw)};
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
