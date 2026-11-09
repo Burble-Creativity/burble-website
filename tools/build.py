@@ -121,7 +121,7 @@ def nav(d, active=''):
         cur = ' aria-current="page"' if key and key == active else ''
         return f'<a href="{href}"{cur}>{label}</a>'
     links = [a(f'{r}#story', 'Our Story'), a(f'{r}#how-it-works', 'How It Works'), a(f'{r}#science', 'The Science'),
-             a(f'{r}#families-and-institutions', 'Families, Schools &amp; Clinics'), a(f'{r}who-we-are/', 'Who We Are', 'team'),
+             a(f'{r}#families-and-institutions', 'Families, Schools &amp; Clinics'), a(f'{r}#demo', 'Demo'), a(f'{r}who-we-are/', 'Who We Are', 'team'),
              a(f'{r}blog/', 'Blog', 'blog')]
     return f'''{icons()}
 
