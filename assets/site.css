@@ -346,13 +346,18 @@ h3{font-size:19px;letter-spacing:-.01em;line-height:1.3;font-weight:600}
 .kpi b{display:block;font-size:clamp(34px,4.4vw,52px);font-weight:500;letter-spacing:-.03em;line-height:1}
 .kpi span{display:block;margin-top:8px;font-size:15px}
 .kpi small{display:block;color:var(--dim);font-size:13px}
-.quotes{columns:2;column-gap:16px;position:relative;z-index:2}
+.quotes{columns:3;column-gap:16px;position:relative;z-index:2}
 .quote{break-inside:avoid;margin-bottom:16px;padding:28px;border-radius:var(--radius);border:1px solid var(--line);background:linear-gradient(180deg,var(--card-top),var(--card-bot))}
 .quote p{font-size:18px;line-height:1.55;color:var(--text);margin-bottom:20px}
+.quote{--tint:var(--teal);background:linear-gradient(160deg,color-mix(in srgb,var(--tint) 16%,transparent),color-mix(in srgb,var(--tint) 4%,transparent) 70%),linear-gradient(180deg,var(--card-top),var(--card-bot));border-color:color-mix(in srgb,var(--tint) 28%,var(--line))}
+.quote:nth-child(3n+2){--tint:var(--violet)}
+.quote:nth-child(3n){--tint:var(--gold)}
+:root[data-theme="light"] .quote{background:linear-gradient(160deg,color-mix(in srgb,var(--tint) 13%,#fff),color-mix(in srgb,var(--tint) 4%,#fff) 70%)}
 .who-row{display:flex;align-items:center;gap:12px}
-.who-row img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--line-2)}
+.q-note{display:block;margin-top:8px;font-size:14px;color:var(--dim)}
 .who-row b{font-weight:600;font-size:15px}
 .who-row small{display:block;color:var(--dim);font-size:13px}
+@media (max-width:1060px){.quotes{columns:2}}
 @media (max-width:760px){.quotes{columns:1}.kpis{grid-template-columns:1fr}.kpi{border-right:0;border-bottom:1px solid var(--line)}.kpi:last-child{border-bottom:0}}
 
 /* ---------- BLOG ---------- */
